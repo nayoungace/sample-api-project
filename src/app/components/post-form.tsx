@@ -10,7 +10,9 @@ function PostForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (title.length < 1) {
       alert('제목을 입력해 주세요.');
       return;
@@ -19,11 +21,20 @@ function PostForm() {
       alert('내용을 입력해 주세요.');
       return;
     }
-    await submitPost(formData);
+
+    try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+
+      await submitPost(formData);
+    } catch {
+      console.error('폼 제출 중 오류가 발생했습니다.');
+    }
   };
 
   return (
-    <form className="flex flex-col w-full" action={handleSubmit}>
+    <form className="flex flex-col w-full" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-x-6 gap-y-5">
         <FormItem>
           <Label>제목</Label>
