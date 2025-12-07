@@ -1,12 +1,9 @@
 import { submitPost } from '@/app/features/post/PostAction';
-import { Button } from '@/app/components/button';
-import { Card, CardBody, CardHeader } from '@/app/components/card';
-import { FormInput, FormItem, FormTextarea } from '@/app/components/form';
-import { Label } from '@/app/components/label';
-import { Title } from '@/app/components/title';
-import { PostService } from '@/app/features/post/PostService';
-
-const posts = await PostService.getAllPosts();
+import { Button } from '@/app/components/common/button';
+import { FormInput, FormItem, FormTextarea } from '@/app/components/common/form';
+import { Label } from '@/app/components/common/label';
+import { Title } from '@/app/components/common/title';
+import PostList from '@/app/components/post-list';
 
 export default function Home() {
   return (
@@ -31,24 +28,7 @@ export default function Home() {
               </div>
             </div>
           </form>
-          <div className="flex flex-col w-full">
-            <Label>리스트 확인</Label>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-5">
-              <ul>
-                {posts.map((post) => (
-                  <li
-                    key={post.id}
-                    className="p-5 mb-4 bg-white border border-gray-200 task rounded-xl shadow-theme-sm dark:border-gray-800 dark:bg-white/5"
-                  >
-                    <Card>
-                      <CardHeader>{post.title}</CardHeader>
-                      <CardBody>{post.content}</CardBody>
-                    </Card>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <PostList />
         </div>
       </main>
     </div>
