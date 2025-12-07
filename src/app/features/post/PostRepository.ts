@@ -7,4 +7,8 @@ export class PostRepository {
       data: param,
     });
   }
+
+  public static async findAll() {
+    return await client.post.findMany();
+  }
 }

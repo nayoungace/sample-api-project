@@ -7,4 +7,8 @@ export class PostService {
       content,
     });
   }
+
+  public static async getAllPosts() {
+    return await PostRepository.findAll();
+  }
 }

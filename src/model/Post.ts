@@ -4,5 +4,11 @@ export interface PostCreate {
 }
 
 export class Post {
-  constructor(readonly id: string, readonly title: string, readonly content: string) {}
+  constructor(
+    readonly id: string,
+    readonly title: string,
+    readonly content: string,
+    readonly createdAt: Date,
+    readonly updatedAt: Date,
+  ) {}
 }

@@ -4,6 +4,9 @@ import { Card, CardBody, CardHeader } from '@/app/components/card';
 import { FormInput, FormItem, FormTextarea } from '@/app/components/form';
 import { Label } from '@/app/components/label';
 import { Title } from '@/app/components/title';
+import { PostService } from '@/app/features/post/PostService';
+
+const posts = await PostService.getAllPosts();
 
 export default function Home() {
   return (
@@ -32,12 +35,17 @@ export default function Home() {
             <Label>리스트 확인</Label>
             <div className="grid grid-cols-1 gap-x-6 gap-y-5">
               <ul>
-                <li className="p-5 mb-4 bg-white border border-gray-200 task rounded-xl shadow-theme-sm dark:border-gray-800 dark:bg-white/5">
-                  <Card>
-                    <CardHeader>제목</CardHeader>
-                    <CardBody>내용</CardBody>
-                  </Card>
-                </li>
+                {posts.map((post) => (
+                  <li
+                    key={post.id}
+                    className="p-5 mb-4 bg-white border border-gray-200 task rounded-xl shadow-theme-sm dark:border-gray-800 dark:bg-white/5"
+                  >
+                    <Card>
+                      <CardHeader>{post.title}</CardHeader>
+                      <CardBody>{post.content}</CardBody>
+                    </Card>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
