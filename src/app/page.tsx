@@ -4,8 +4,11 @@ import { FormInput, FormItem, FormTextarea } from '@/app/components/common/form'
 import { Label } from '@/app/components/common/label';
 import { Title } from '@/app/components/common/title';
 import PostList from '@/app/components/post-list';
+import { PostService } from '@/app/features/post/PostService';
 
-export default function Home() {
+export default async function Home() {
+  const posts = await PostService.getAllPosts();
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-noto dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black items-start">
@@ -28,7 +31,7 @@ export default function Home() {
               </div>
             </div>
           </form>
-          <PostList />
+          <PostList initialPosts={posts} />
         </div>
       </main>
     </div>

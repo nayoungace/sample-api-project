@@ -1,14 +1,12 @@
-export interface PostCreate {
+export interface IPostCreate {
   readonly title: string;
   readonly content: string;
 }
 
-export class Post {
-  constructor(
-    readonly id: string,
-    readonly title: string,
-    readonly content: string,
-    readonly createdAt: Date,
-    readonly updatedAt: Date,
-  ) {}
+export interface IPost {
+  readonly id: number;
+  readonly title: string;
+  readonly content: string;
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }

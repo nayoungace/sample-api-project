@@ -26,7 +26,7 @@ const postData: Prisma.PostCreateInput[] = [
   },
   {
     title: '세 번째 게시물',
-    content: null,
+    content: '',
   },
 ];
 

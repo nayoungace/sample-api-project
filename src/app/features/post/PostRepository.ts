@@ -1,8 +1,8 @@
 import client from '@/lib/prisma';
-import { PostCreate } from '@/model/Post';
+import { IPostCreate } from '@/model/Post';
 
 export class PostRepository {
-  public static async create(param: PostCreate) {
+  public static async create(param: IPostCreate) {
     return client.post.create({
       data: param,
     });

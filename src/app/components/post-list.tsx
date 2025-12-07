@@ -1,11 +1,14 @@
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@/app/components/common/button';
 import { Label } from '@/app/components/common/label';
 import { Card, CardBody, CardHeader } from '@/app/components/common/card';
-import { PostService } from '@/app/features/post/PostService';
+import { IPost } from '@/model/Post';
 
-const posts = await PostService.getAllPosts();
+function PostList({ initialPosts }: { initialPosts: IPost[] }) {
+  const [posts] = useState(initialPosts);
 
-function PostList() {
   return (
     <div className="flex flex-col w-full">
       <Label>리스트 확인</Label>

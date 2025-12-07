@@ -9,6 +9,12 @@ export class PostService {
   }
 
   public static async getAllPosts() {
-    return await PostRepository.findAll();
+    const posts = await PostRepository.findAll();
+
+    return posts.map((post) => ({
+      ...post,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+    }));
   }
 }
