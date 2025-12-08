@@ -4,9 +4,14 @@ import { useState } from 'react';
 import { Button } from '@/app/components/common/button';
 import { Label } from '@/app/components/common/label';
 import { Card, CardBody, CardHeader } from '@/app/components/common/card';
-import { IPost } from '@/model/Post';
+import { IPost, PostType } from '@/model/Post';
 
-function PostList({ initialPosts }: { initialPosts: IPost[] }) {
+type Props = {
+  initialPosts: IPost[];
+  onChangeMode: (mode: string) => void;
+};
+
+function PostList({ initialPosts, onChangeMode }: Props) {
   const [posts] = useState(initialPosts);
 
   return (
@@ -25,7 +30,7 @@ function PostList({ initialPosts }: { initialPosts: IPost[] }) {
                 </CardHeader>
                 <CardBody>{post.content}</CardBody>
                 <div>
-                  <Button size="small" className="ml-auto">
+                  <Button size="small" className="ml-auto" onClick={() => onChangeMode(PostType.EDIT)}>
                     수정
                   </Button>
                 </div>

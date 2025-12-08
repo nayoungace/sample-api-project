@@ -1,3 +1,8 @@
+export enum PostType {
+  CREATE = 'CREATE',
+  EDIT = 'EDIT',
+}
+
 export interface IPostCreate {
   readonly title: string;
   readonly content: string;
