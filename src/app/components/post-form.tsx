@@ -4,11 +4,20 @@ import { useState } from 'react';
 import { Button } from '@/app/components/common/button';
 import { FormInput, FormItem, FormTextarea } from '@/app/components/common/form';
 import { Label } from '@/app/components/common/label';
-import { submitPost } from '@/app/features/post/PostAction';
+import { editPost, writePost } from '@/app/features/post/PostAction';
+import { IPost, PostType } from '@/model/Post';
 
-function PostForm() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+type Props = {
+  mode: string;
+  post?: IPost | null;
+};
+
+function PostForm({ mode, post = null }: Props) {
+  const initialTitle = mode === PostType.EDIT && post ? post.title : '';
+  const initialContent = mode === PostType.EDIT && post ? post.content : '';
+
+  const [title, setTitle] = useState<string>(initialTitle);
+  const [content, setContent] = useState<string>(initialContent);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +36,14 @@ function PostForm() {
       formData.append('title', title);
       formData.append('content', content);
 
-      await submitPost(formData);
+      if (mode === PostType.CREATE) {
+        await writePost(formData);
+      } else if (mode === PostType.EDIT && post) {
+        formData.append('id', post.id.toString());
+        await editPost(formData);
+      } else {
+        console.error('유효하지 않은 모드입니다.');
+      }
     } catch {
       console.error('폼 제출 중 오류가 발생했습니다.');
     }
@@ -38,16 +54,37 @@ function PostForm() {
       <div className="grid grid-cols-1 gap-x-6 gap-y-5">
         <FormItem>
           <Label>제목</Label>
-          <FormInput name="title" onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력해주세요." />
+          <FormInput
+            name="title"
+            defaultValue={mode === PostType.EDIT && !!post ? post.title : undefined}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력해주세요."
+          />
         </FormItem>
         <FormItem>
           <Label>내용</Label>
-          <FormTextarea name="content" onChange={(e) => setContent(e.target.value)} placeholder="내용을 입력해주세요." />
+          <FormTextarea
+            name="content"
+            defaultValue={mode === PostType.EDIT && !!post ? post.content : undefined}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="내용을 입력해주세요."
+          />
         </FormItem>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <Button type="submit" className="md:ml-auto">
-            저장
-          </Button>
+          {mode === PostType.CREATE ? (
+            <Button type="submit" className="md:ml-auto" size="medium">
+              저장
+            </Button>
+          ) : (
+            <>
+              <Button className="md:ml-auto" size="medium">
+                나가기
+              </Button>
+              <Button type="submit" size="medium">
+                수정
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </form>

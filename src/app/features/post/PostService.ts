@@ -8,6 +8,19 @@ export class PostService {
     });
   }
 
+  public static async edit(id: number, title: string, content: string) {
+    const post = await PostRepository.update({
+      id,
+      title,
+      content,
+    });
+
+    return {
+      ...post,
+      updatedAt: post.updatedAt.toISOString(),
+    };
+  }
+
   public static async getAllPosts() {
     const posts = await PostRepository.findAll();
 

@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { Button } from '@/app/components/common/button';
 import { Label } from '@/app/components/common/label';
 import { Card, CardBody, CardHeader } from '@/app/components/common/card';
-import { IPost, PostType } from '@/model/Post';
+import { IPost } from '@/model/Post';
 
 type Props = {
   initialPosts: IPost[];
-  onChangeMode: (mode: string) => void;
+  onEdit: (post: IPost) => void;
 };
 
-function PostList({ initialPosts, onChangeMode }: Props) {
+function PostList({ initialPosts, onEdit }: Props) {
   const [posts] = useState(initialPosts);
 
   return (
@@ -30,7 +30,7 @@ function PostList({ initialPosts, onChangeMode }: Props) {
                 </CardHeader>
                 <CardBody>{post.content}</CardBody>
                 <div>
-                  <Button size="small" className="ml-auto" onClick={() => onChangeMode(PostType.EDIT)}>
+                  <Button size="small" className="ml-auto" onClick={() => onEdit(post)}>
                     수정
                   </Button>
                 </div>
