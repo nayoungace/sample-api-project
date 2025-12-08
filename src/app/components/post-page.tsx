@@ -10,6 +10,11 @@ function PostPage({ initialPosts }: { initialPosts: IPost[] }) {
   const [mode, setMode] = useState<string>(PostType.CREATE);
   const [editPost, setEditPost] = useState<IPost | null>(null);
 
+  const handleCreate = () => {
+    setMode(PostType.CREATE);
+    setEditPost(null);
+  };
+
   const handleEdit = (post: IPost) => {
     setMode(PostType.EDIT);
     setEditPost(post);
@@ -18,7 +23,7 @@ function PostPage({ initialPosts }: { initialPosts: IPost[] }) {
   return (
     <div className="flex flex-col w-full items-center gap-6 text-center sm:items-start sm:text-left">
       <Title>Sample-api-project</Title>
-      <PostForm mode={mode} post={editPost} />
+      <PostForm mode={mode} post={editPost} onCreate={handleCreate} />
       <PostList initialPosts={initialPosts} onEdit={handleEdit} />
     </div>
   );

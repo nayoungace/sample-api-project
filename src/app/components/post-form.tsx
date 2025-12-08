@@ -10,9 +10,10 @@ import { IPost, PostType } from '@/model/Post';
 type Props = {
   mode: string;
   post?: IPost | null;
+  onCreate: () => void;
 };
 
-function PostForm({ mode, post = null }: Props) {
+function PostForm({ mode, post = null, onCreate }: Props) {
   const initialTitle = mode === PostType.EDIT && post ? post.title : '';
   const initialContent = mode === PostType.EDIT && post ? post.content : '';
 
@@ -77,7 +78,7 @@ function PostForm({ mode, post = null }: Props) {
             </Button>
           ) : (
             <>
-              <Button className="md:ml-auto" size="medium">
+              <Button className="md:ml-auto" size="medium" onClick={() => onCreate()}>
                 나가기
               </Button>
               <Button type="submit" size="medium">
