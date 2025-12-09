@@ -10,10 +10,10 @@ import { IPost, PostType } from '@/model/Post';
 type Props = {
   mode: string;
   post?: IPost | null;
-  onCreate: () => void;
+  onWriteMode: () => void;
 };
 
-function PostForm({ mode, post = null, onCreate }: Props) {
+function PostForm({ mode, post = null, onWriteMode }: Props) {
   const initialTitle = mode === PostType.EDIT && post ? post.title : '';
   const initialContent = mode === PostType.EDIT && post ? post.content : '';
 
@@ -37,11 +37,12 @@ function PostForm({ mode, post = null, onCreate }: Props) {
       formData.append('title', title);
       formData.append('content', content);
 
-      if (mode === PostType.CREATE) {
+      if (mode === PostType.WRITE) {
         await writePost(formData);
       } else if (mode === PostType.EDIT && post) {
         formData.append('id', post.id.toString());
         await editPost(formData);
+        onWriteMode();
       } else {
         console.error('유효하지 않은 모드입니다.');
       }
@@ -72,13 +73,13 @@ function PostForm({ mode, post = null, onCreate }: Props) {
           />
         </FormItem>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          {mode === PostType.CREATE ? (
+          {mode === PostType.WRITE ? (
             <Button type="submit" className="md:ml-auto" size="medium">
               저장
             </Button>
           ) : (
             <>
-              <Button className="md:ml-auto" size="medium" onClick={() => onCreate()}>
+              <Button className="md:ml-auto" size="medium" onClick={() => onWriteMode()}>
                 나가기
               </Button>
               <Button type="submit" size="medium">

@@ -8,10 +8,10 @@ import { IPost } from '@/model/Post';
 
 type Props = {
   initialPosts: IPost[];
-  onEdit: (post: IPost) => void;
+  onEditMode: (post: IPost) => void;
 };
 
-function PostList({ initialPosts, onEdit }: Props) {
+function PostList({ initialPosts, onEditMode }: Props) {
   const [posts] = useState(initialPosts);
 
   return (
@@ -30,7 +30,7 @@ function PostList({ initialPosts, onEdit }: Props) {
                 </CardHeader>
                 <CardBody>{post.content}</CardBody>
                 <div>
-                  <Button size="small" className="ml-auto" onClick={() => onEdit(post)}>
+                  <Button size="small" className="ml-auto" onClick={() => onEditMode(post)}>
                     수정
                   </Button>
                 </div>

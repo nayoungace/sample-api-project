@@ -7,15 +7,15 @@ import PostList from '@/app/components/post-list';
 import { IPost, PostType } from '@/model/Post';
 
 function PostPage({ initialPosts }: { initialPosts: IPost[] }) {
-  const [mode, setMode] = useState<string>(PostType.CREATE);
+  const [mode, setMode] = useState<string>(PostType.WRITE);
   const [editPost, setEditPost] = useState<IPost | null>(null);
 
-  const handleCreate = () => {
-    setMode(PostType.CREATE);
+  const handleWriteMode = () => {
+    setMode(PostType.WRITE);
     setEditPost(null);
   };
 
-  const handleEdit = (post: IPost) => {
+  const handleEditMode = (post: IPost) => {
     setMode(PostType.EDIT);
     setEditPost(post);
   };
@@ -23,8 +23,8 @@ function PostPage({ initialPosts }: { initialPosts: IPost[] }) {
   return (
     <div className="flex flex-col w-full items-center gap-6 text-center sm:items-start sm:text-left">
       <Title>Sample-api-project</Title>
-      <PostForm mode={mode} post={editPost} onCreate={handleCreate} />
-      <PostList initialPosts={initialPosts} onEdit={handleEdit} />
+      <PostForm mode={mode} post={editPost} onWriteMode={handleWriteMode} />
+      <PostList initialPosts={initialPosts} onEditMode={handleEditMode} />
     </div>
   );
 }

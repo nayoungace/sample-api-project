@@ -1,5 +1,5 @@
 export enum PostType {
-  CREATE = 'CREATE',
+  WRITE = 'WRITE',
   EDIT = 'EDIT',
 }
 
