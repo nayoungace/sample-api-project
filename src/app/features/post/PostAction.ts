@@ -18,8 +18,7 @@ export async function writePost(formData: FormData) {
   const content = formData.get('content') as string;
 
   if (isValid(title, content)) {
-    await PostService.write(title, content);
-    return;
+    return await PostService.write(title, content);
   }
 }
 
@@ -28,8 +27,11 @@ export async function editPost(formData: FormData) {
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
 
+  if (!id) {
+    throw new Error('수정할 게시글 ID가 유효하지 않습니다.');
+  }
+
   if (isValid(title, content)) {
-    await PostService.edit(id, title, content);
-    return;
+    return await PostService.edit(id, title, content);
   }
 }

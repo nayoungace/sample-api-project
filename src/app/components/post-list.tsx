@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/app/components/common/button';
 import { Label } from '@/app/components/common/label';
 import { Card, CardBody, CardHeader } from '@/app/components/common/card';
@@ -12,14 +11,12 @@ type Props = {
 };
 
 function PostList({ initialPosts, onEditMode }: Props) {
-  const [posts] = useState(initialPosts);
-
   return (
     <div className="flex flex-col w-full">
       <Label>리스트 확인</Label>
       <div className="grid grid-cols-1 gap-x-6 gap-y-5">
         <ul>
-          {posts.map((post) => (
+          {initialPosts.map((post) => (
             <li
               key={post.id}
               className="p-5 mb-4 bg-white border border-gray-200 task rounded-xl shadow-theme-sm dark:border-gray-800 dark:bg-white/5"

@@ -2,10 +2,16 @@ import { PostRepository } from '@/app/features/post/PostRepository';
 
 export class PostService {
   public static async write(title: string, content: string) {
-    await PostRepository.create({
+    const post = await PostRepository.create({
       title,
       content,
     });
+
+    return {
+      ...post,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+    };
   }
 
   public static async edit(id: number, title: string, content: string) {
@@ -17,6 +23,7 @@ export class PostService {
 
     return {
       ...post,
+      createdAt: post.createdAt.toISOString(),
       updatedAt: post.updatedAt.toISOString(),
     };
   }

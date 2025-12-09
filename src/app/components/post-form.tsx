@@ -11,9 +11,10 @@ type Props = {
   mode: string;
   post?: IPost | null;
   onWriteMode: () => void;
+  onPostUpdate: (newPost: IPost | undefined) => void;
 };
 
-function PostForm({ mode, post = null, onWriteMode }: Props) {
+function PostForm({ mode, post = null, onWriteMode, onPostUpdate }: Props) {
   //- form data state
   const initialTitle = post ? post.title : '';
   const initialContent = post ? post.content : '';
@@ -45,11 +46,15 @@ function PostForm({ mode, post = null, onWriteMode }: Props) {
       formData.append('content', content);
 
       if (mode === PostType.WRITE) {
-        await writePost(formData);
+        const newPost: IPost | undefined = await writePost(formData);
+        onPostUpdate(newPost);
+
         initFormData();
       } else if (mode === PostType.EDIT && post) {
         formData.append('id', post.id.toString());
-        await editPost(formData);
+        const newEditPost: IPost | undefined = await editPost(formData);
+        onPostUpdate(newEditPost);
+
         onWriteMode();
       } else {
         console.error('유효하지 않은 모드입니다.');

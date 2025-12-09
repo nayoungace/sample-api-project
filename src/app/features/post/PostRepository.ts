@@ -19,6 +19,10 @@ export class PostRepository {
   }
 
   public static async findAll() {
-    return await client.post.findMany();
+    return await client.post.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+    });
   }
 }
