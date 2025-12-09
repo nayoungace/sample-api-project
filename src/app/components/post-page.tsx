@@ -39,12 +39,15 @@ function PostPage({ initialPosts }: { initialPosts: IPost[] }) {
     setPosts((prevPosts) => updatePosts(prevPosts, newPost));
     handleWriteMode();
   };
+  const handlePostRemove = (removedPost: IPost) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== removedPost.id));
+  };
 
   return (
     <div className="flex flex-col w-full items-center gap-6 text-center sm:items-start sm:text-left">
       <Title>Sample-api-project</Title>
       <PostForm mode={mode} post={editPost} onWriteMode={handleWriteMode} onPostUpdate={handlePostUpdate} />
-      <PostList initialPosts={posts} onEditMode={handleEditMode} />
+      <PostList initialPosts={posts} onEditMode={handleEditMode} onPostRemove={handlePostRemove} />
     </div>
   );
 }

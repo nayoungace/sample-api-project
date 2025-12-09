@@ -35,3 +35,7 @@ export async function editPost(formData: FormData) {
     return await PostService.edit(id, title, content);
   }
 }
+
+export async function removePost(id: number) {
+  return await PostService.remove(id);
+}

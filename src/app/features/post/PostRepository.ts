@@ -18,6 +18,12 @@ export class PostRepository {
     });
   }
 
+  public static async delete(id: number) {
+    return client.post.delete({
+      where: { id },
+    });
+  }
+
   public static async findAll() {
     return await client.post.findMany({
       orderBy: {

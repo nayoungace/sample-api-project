@@ -28,6 +28,16 @@ export class PostService {
     };
   }
 
+  public static async remove(id: number) {
+    const post = await PostRepository.delete(id);
+
+    return {
+      ...post,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+    };
+  }
+
   public static async getAllPosts() {
     const posts = await PostRepository.findAll();
 
