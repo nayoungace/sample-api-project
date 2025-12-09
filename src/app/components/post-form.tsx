@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/app/components/common/button';
 import { FormInput, FormItem, FormTextarea } from '@/app/components/common/form';
 import { Label } from '@/app/components/common/label';
@@ -14,12 +14,19 @@ type Props = {
 };
 
 function PostForm({ mode, post = null, onWriteMode }: Props) {
-  const initialTitle = mode === PostType.EDIT && post ? post.title : '';
-  const initialContent = mode === PostType.EDIT && post ? post.content : '';
-
+  //- form data state
+  const initialTitle = post ? post.title : '';
+  const initialContent = post ? post.content : '';
   const [title, setTitle] = useState<string>(initialTitle);
   const [content, setContent] = useState<string>(initialContent);
 
+  //- initialize form data
+  const initFormData = () => {
+    setTitle('');
+    setContent('');
+  };
+
+  //- form submit handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -39,6 +46,7 @@ function PostForm({ mode, post = null, onWriteMode }: Props) {
 
       if (mode === PostType.WRITE) {
         await writePost(formData);
+        initFormData();
       } else if (mode === PostType.EDIT && post) {
         formData.append('id', post.id.toString());
         await editPost(formData);
@@ -51,45 +59,47 @@ function PostForm({ mode, post = null, onWriteMode }: Props) {
     }
   };
 
+  //- change mode effect
+  useEffect(() => {
+    if (mode === PostType.EDIT && post) {
+      setTitle(post.title);
+      setContent(post.content);
+    } else if (mode === PostType.WRITE) {
+      initFormData();
+    }
+  }, [post, mode]);
+
   return (
-    <form className="flex flex-col w-full" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 gap-x-6 gap-y-5">
-        <FormItem>
-          <Label>제목</Label>
-          <FormInput
-            name="title"
-            defaultValue={mode === PostType.EDIT && !!post ? post.title : undefined}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="제목을 입력해주세요."
-          />
-        </FormItem>
-        <FormItem>
-          <Label>내용</Label>
-          <FormTextarea
-            name="content"
-            defaultValue={mode === PostType.EDIT && !!post ? post.content : undefined}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="내용을 입력해주세요."
-          />
-        </FormItem>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          {mode === PostType.WRITE ? (
-            <Button type="submit" className="md:ml-auto" size="medium">
-              저장
-            </Button>
-          ) : (
-            <>
-              <Button className="md:ml-auto" size="medium" onClick={() => onWriteMode()}>
-                나가기
+    <>
+      <form className="flex flex-col w-full" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-x-6 gap-y-5">
+          <FormItem>
+            <Label>제목</Label>
+            <FormInput name="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력해주세요." />
+          </FormItem>
+          <FormItem>
+            <Label>내용</Label>
+            <FormTextarea name="content" value={content} onChange={(e) => setContent(e.target.value)} placeholder="내용을 입력해주세요." />
+          </FormItem>
+          <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+            {mode === PostType.WRITE ? (
+              <Button type="submit" className="md:ml-auto" size="medium">
+                저장
               </Button>
-              <Button type="submit" size="medium">
+            ) : (
+              <Button type="submit" className="md:ml-auto" size="medium">
                 수정
               </Button>
-            </>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      {mode === PostType.EDIT && (
+        <Button type="button" className="md:ml-auto" size="medium" onClick={() => onWriteMode()}>
+          나가기
+        </Button>
+      )}
+    </>
   );
 }
 
